@@ -1,0 +1,16 @@
+.project
+.classpath
+*.class
+/.settings/
+.DS_Store
+.idea
+*.iml
+/*/.settings/
+/*/target/
+/log/
+/*/log/
+/shared/log/
+/*/shared/log/
+target/
+*.log
+process_log/
