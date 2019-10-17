@@ -5,6 +5,7 @@ import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -22,6 +23,7 @@ import javax.servlet.MultipartConfigElement;
 @Configuration
 @EnableConfigurationProperties
 @SpringBootApplication(exclude={ DataSourceAutoConfiguration.class})
+@MapperScan("com.grant.outsourcing.gs.db.mapper")
 public class MainApplication {
 
     public static void main(String[] args) throws Exception {
