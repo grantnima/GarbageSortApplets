@@ -7,10 +7,8 @@ import com.grant.outsourcing.gs.component.GarbageComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -27,6 +25,18 @@ public class GarbageController extends BaseApp
 		LOGGER.debug("[createGarbage], request: {}", JSON.toJSONString(request));
 		garbageComponent.createGarbage(request);
 		return buildResponse();
+	}
+
+	@PostMapping("/import")
+	public Map<String,Object> importGarbage (@RequestParam MultipartFile file) throws BaseException {
+		LOGGER.debug("[importGarbage], fileName: {}", file.getOriginalFilename());
+		return buildResponse(garbageComponent.importGarbage(file));
+	}
+
+	@GetMapping("/dictionary")
+	public Map<String,Object> getGarbageDictionary (@RequestParam(name = "sort") Integer sort) throws BaseException {
+		LOGGER.debug("[getGarbageDictionary], sort: {}", sort);
+		return buildResponse(garbageComponent.getGarbageDictionary(sort));
 	}
 
 }
