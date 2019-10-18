@@ -16,4 +16,8 @@ public class GarbageService
 	public void save (Garbage garbage){
 		garbageMapper.save(garbage);
 	}
+
+	public Garbage findByName (String name){
+		return garbageMapper.findByName(name);
+	}
 }
