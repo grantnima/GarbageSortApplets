@@ -47,11 +47,11 @@
                 <env>test</env>
                 <redis.address>redis://localhost:6379</redis.address>
                 <redis.password></redis.password>
-                <mysql.host>rm-wz922mark1vyt46w41o.mysql.rds.aliyuncs.com</mysql.host>
+                <mysql.host>localhost</mysql.host>
                 <mysql.port>3306</mysql.port>
-                <mysql.database>wechat_game_activity</mysql.database>
-                <mysql.user>root</mysql.user>
-                <mysql.password>c3P023077841zx</mysql.password>
+                <mysql.database>garbage_sort</mysql.database>
+                <mysql.user>garbageSort</mysql.user>
+                <mysql.password>9SmysqlPsw@</mysql.password>
             </properties>
         </profile>
 
@@ -66,9 +66,9 @@
                 <redis.password></redis.password>
                 <mysql.host>127.0.0.1</mysql.host>
                 <mysql.port>3306</mysql.port>
-                <mysql.database>wechat_game_activity</mysql.database>
-                <mysql.user>wga</mysql.user>
-                <mysql.password>c3P023077841zx!</mysql.password>
+                <mysql.database>garbage_sort</mysql.database>
+                <mysql.user>garbageSort</mysql.user>
+                <mysql.password>9SmysqlPsw@</mysql.password>
             </properties>
         </profile>
 
