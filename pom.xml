@@ -258,7 +258,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.grant.outsourcing.MainApplication</mainClass>
+                            <mainClass>com.grant.outsourcing.gs.MainApplication</mainClass>
                         </manifest>
                         <manifestEntries>
                             <Class-Path>config/</Class-Path>
