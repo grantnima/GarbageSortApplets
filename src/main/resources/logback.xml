@@ -16,7 +16,8 @@
         </encoder>
     </appender>
 
-    <logger name="com.ant.project" level="debug"/>
+    <logger name="com.grant.outsourcing.gs.db.mapper" level="warn"/>
+    <logger name="com.grant.outsourcing.gs" level="debug"/>
     <logger name="org.springframework" level="warn"/>
     <logger name="org.hibernate" level="warn"/>
     <logger name="com.ning.http" level="warn"/>
