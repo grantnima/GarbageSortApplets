@@ -7,6 +7,7 @@ import com.grant.outsourcing.gs.constant.ERespCode;
 import com.grant.outsourcing.gs.db.model.Garbage;
 import com.grant.outsourcing.gs.service.GarbageService;
 import com.grant.outsourcing.gs.utils.ChineseToFirstLetterUtil;
+import com.grant.outsourcing.gs.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class GarbageComponent
 			throw new BaseException(ERespCode.INTERNAL_ERROR);
 		}
 		Garbage garbage = new Garbage();
-		garbage.setId(UUID.randomUUID().toString());
+		garbage.setId(StringUtils.getSimpleUUID());
 		garbage.setName(request.getName());
 		garbage.setSort(request.getSort());
 		String capitalLetter = "";
