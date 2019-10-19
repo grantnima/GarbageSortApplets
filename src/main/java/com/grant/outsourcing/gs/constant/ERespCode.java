@@ -12,6 +12,7 @@ public enum ERespCode implements IRespCode {
     // 公共异常业务码
     EXPIRED_TOKEN("登录状态已过期", 40006),
     CODE_TO_SESSION_FAIL("微信获取登录凭证失败",40007),
+    COLLECTED("垃圾已收藏",40008),
 
     // 内部异常业务码
     INTERNAL_ERROR("处理错误", 50001);

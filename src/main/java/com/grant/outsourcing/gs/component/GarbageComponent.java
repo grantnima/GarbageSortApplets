@@ -5,13 +5,19 @@ import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.google.common.base.Strings;
 import com.grant.outsourcing.gs.api.exception.BaseException;
 import com.grant.outsourcing.gs.api.request.PostGarbageRequest;
+import com.grant.outsourcing.gs.constant.CacheKey;
 import com.grant.outsourcing.gs.constant.Constant;
 import com.grant.outsourcing.gs.constant.ERespCode;
 import com.grant.outsourcing.gs.db.model.Garbage;
+import com.grant.outsourcing.gs.db.model.User;
+import com.grant.outsourcing.gs.db.model.UserCollection;
 import com.grant.outsourcing.gs.service.GarbageService;
+import com.grant.outsourcing.gs.service.UserCollectionService;
 import com.grant.outsourcing.gs.utils.ChineseToFirstLetterUtil;
 import com.grant.outsourcing.gs.utils.StringUtils;
 import com.grant.outsourcing.gs.vo.GarbageImportVo;
+import org.redisson.api.RMap;
+import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +32,10 @@ public class GarbageComponent
 	private static final Logger LOGGER = LoggerFactory.getLogger(GarbageComponent.class);
 
 	@Autowired private GarbageService garbageService;
+
+	@Autowired private UserCollectionService userCollectionService;
+
+	@Autowired private RedissonClient redissonClient;
 
 	public void createGarbage (PostGarbageRequest request) throws BaseException {
 		if(Strings.isNullOrEmpty(request.getName())){
@@ -101,7 +111,7 @@ public class GarbageComponent
 		return response;
 	}
 
-	public List<Map<String,Object>> getGarbageDictionary (Integer sort) throws BaseException {
+	public List<Map<String,Object>> getGarbageDictionary (User user,Integer sort) throws BaseException {
 		List<Map<String,Object>> response = new ArrayList<>();
 		List<Garbage> garbageList = garbageService.findBySort(sort);
 		if(garbageList != null && garbageList.size() != 0){
@@ -110,10 +120,84 @@ public class GarbageComponent
 				responseItem.put("id",garbage.getId());
 				responseItem.put("name",garbage.getName());
 				responseItem.put("capital_letter",garbage.getCapitalLetter());
+				responseItem.put("collected",userCollectionService.findByUserIdAndGarbageId(user.getId(),garbage.getId()) != null);
 				response.add(responseItem);
 			}
 		}
 		return response;
 	}
 
+	public void addOrCancelCollection (User user, String garbageId ) throws BaseException {
+		UserCollection userCollection = userCollectionService.findByUserIdAndGarbageId(user.getId(),garbageId);
+		if(userCollection != null){
+			//取消收藏
+			userCollectionService.delete(userCollection.getId());
+			return;
+		}
+		//加入收藏
+		userCollection = new UserCollection();
+		userCollection.setId(StringUtils.getSimpleUUID());
+		userCollection.setGarbageId(garbageId);
+		userCollection.setUserId(user.getId());
+		userCollection.setCreateTime(System.currentTimeMillis());
+		userCollectionService.save(userCollection);
+	}
+
+	public List<Map<String,Object>> getCollectionList (User user) throws BaseException {
+		List<Map<String,Object>> response = new ArrayList<>();
+		List<UserCollection> collections = userCollectionService.findByUserId(user.getId());
+		if(collections == null || collections.size() == 0){
+			return response;
+		}
+		for(UserCollection collection : collections){
+			Map<String,Object> responseItem = new HashMap<>();
+			responseItem.put("collection_id",collection.getId());
+			responseItem.put("garbage_id",collection.getGarbageId());
+			responseItem.put("garbage_name",garbageService.findNameById(collection.getGarbageId()));
+			responseItem.put("garbage_sort",garbageService.findSortById(collection.getGarbageId()));
+			response.add(responseItem);
+		}
+		return response;
+	}
+
+	public List<Map<String,Object>> searchGarbage (User user, String regx) throws BaseException {
+		List<Map<String,Object>> response = new ArrayList<>();
+		//保存搜索记录
+		saveSearchRecord(user.getId(),regx);
+
+		List<Garbage> garbageList = garbageService.findByRegx("%" + regx + "%");
+		if(garbageList == null || garbageList.size() == 0){
+			return response;
+		}
+		for(Garbage garbage : garbageList){
+			Map<String,Object> responseItem = new HashMap<>();
+			responseItem.put("garbage_id",garbage.getId());
+			responseItem.put("garbage_name",garbage.getName());
+			responseItem.put("garbage_sort",garbage.getSort());
+			responseItem.put("collected",userCollectionService.findByUserIdAndGarbageId(user.getId(),garbage.getId()) != null);
+			response.add(responseItem);
+		}
+
+		return response;
+	}
+
+	private void saveSearchRecord (String userId, String regx){
+		RMap<String,List<String>> recordMap = redissonClient.getMap(CacheKey.USER_SEARCH_RECORD);
+		List<String> regxList = recordMap.get(userId);
+		if(regxList == null){
+			//该用户还未有搜索记录
+			regxList = new ArrayList<>();
+			regxList.add(regx);
+			recordMap.put(userId,regxList);
+		}else {
+			//用户已有搜索记录 加一个
+			regxList.add(regx);
+			recordMap.put(userId,regxList);
+		}
+	}
+
+	public List<String> getSearchRecord (User user) throws BaseException {
+		RMap<String,List<String>> recordMap = redissonClient.getMap(CacheKey.USER_SEARCH_RECORD);
+		return recordMap.getOrDefault(user.getId(),new ArrayList<>());
+	}
 }

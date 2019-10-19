@@ -25,4 +25,16 @@ public class GarbageService
 	public List<Garbage> findBySort (Integer sort) {
 		return garbageMapper.findBySort(sort);
 	}
+
+	public String findNameById (String id) {
+		return garbageMapper.findNameById(id);
+	}
+
+	public Integer findSortById (String id) {
+		return garbageMapper.findSortById(id);
+	}
+
+	public List<Garbage> findByRegx (String regx) {
+		return garbageMapper.findByRegx(regx);
+	}
 }

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.grant.outsourcing.gs.annotation.UserCheck;
 import com.grant.outsourcing.gs.api.exception.BaseException;
 import com.grant.outsourcing.gs.component.UserComponent;
+import com.grant.outsourcing.gs.constant.ERespCode;
 import com.grant.outsourcing.gs.db.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,14 @@ public class UserController extends BaseApp
 	public Map<String,Object> getUserInfo (@UserCheck User user) throws BaseException {
 		LOGGER.debug("[getUserInfo],user: {}", JSON.toJSONString(user));
 		return buildResponse(user);
+	}
+
+	@GetMapping("/test")
+	public Map<String,Object> test (@UserCheck User user,@RequestParam(name = "code") String code) throws BaseException{
+		if(code.equals("111")){
+			throw new BaseException(ERespCode.INTERNAL_ERROR);
+		}
+		return buildResponse(code);
 	}
 
 }
