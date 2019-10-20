@@ -16,5 +16,5 @@ public interface UserCollectionMapper extends GeneralDao<UserCollection>
 	void deleteById (@Param("id") String id);
 
 	@Select("select * from user_collection where user_id = #{userId} and garbage_id = #{garbageId}")
-	UserCollection findByUserIdAndGarbageId (@Param("userId") String userId, @Param("garbageId") String garbageId);
+	UserCollection findByUserIdAndGarbageId (@Param("userId") String userId, @Param("garbageId") Long garbageId);
 }

@@ -7,7 +7,7 @@ public class UserCollection
 	private String id;
 
 	@JSONField(name = "garbage_id")
-	private String garbageId;
+	private Long garbageId;
 
 	@JSONField(name = "user_id")
 	private String userId;
@@ -35,12 +35,12 @@ public class UserCollection
 		this.id = id;
 	}
 
-	public String getGarbageId()
+	public Long getGarbageId()
 	{
 		return garbageId;
 	}
 
-	public void setGarbageId(String garbageId)
+	public void setGarbageId(Long garbageId)
 	{
 		this.garbageId = garbageId;
 	}

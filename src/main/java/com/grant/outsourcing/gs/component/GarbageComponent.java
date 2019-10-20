@@ -14,6 +14,7 @@ import com.grant.outsourcing.gs.db.model.UserCollection;
 import com.grant.outsourcing.gs.service.GarbageService;
 import com.grant.outsourcing.gs.service.UserCollectionService;
 import com.grant.outsourcing.gs.utils.ChineseToFirstLetterUtil;
+import com.grant.outsourcing.gs.utils.IdUtil;
 import com.grant.outsourcing.gs.utils.StringUtils;
 import com.grant.outsourcing.gs.vo.GarbageImportVo;
 import org.redisson.api.RMap;
@@ -24,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 @Component
@@ -37,12 +39,14 @@ public class GarbageComponent
 
 	@Autowired private RedissonClient redissonClient;
 
+	@Autowired private IdUtil idUtil;
+
 	public void createGarbage (PostGarbageRequest request) throws BaseException {
 		if(Strings.isNullOrEmpty(request.getName())){
 			throw new BaseException(ERespCode.INTERNAL_ERROR);
 		}
 		Garbage garbage = new Garbage();
-		garbage.setId(StringUtils.getSimpleUUID());
+		garbage.setId(idUtil.nextId());
 		garbage.setName(request.getName());
 		garbage.setSort(request.getSort());
 		String capitalLetter = "";
@@ -93,7 +97,7 @@ public class GarbageComponent
 				continue;
 			}
 			garbage = new Garbage();
-			garbage.setId(StringUtils.getSimpleUUID());
+			garbage.setId(idUtil.nextId());
 			garbage.setSort(importVo.getSortType());
 			garbage.setName(importVo.getName());
 			String capitalLetter = "";
@@ -127,7 +131,7 @@ public class GarbageComponent
 		return response;
 	}
 
-	public void addOrCancelCollection (User user, String garbageId ) throws BaseException {
+	public void addOrCancelCollection (User user, Long garbageId ) throws BaseException {
 		UserCollection userCollection = userCollectionService.findByUserIdAndGarbageId(user.getId(),garbageId);
 		if(userCollection != null){
 			//取消收藏

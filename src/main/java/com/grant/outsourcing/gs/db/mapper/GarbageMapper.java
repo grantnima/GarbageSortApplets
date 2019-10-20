@@ -16,11 +16,17 @@ public interface GarbageMapper extends GeneralDao<Garbage>
 	List<Garbage> findBySort (@Param("sort") Integer sort);
 
 	@Select("select name from garbage where id = #{id}")
-	String findNameById (@Param("id") String id);
+	String findNameById (@Param("id") Long id);
 
 	@Select("select sort from garbage where id = #{id}")
-	Integer findSortById (@Param("id") String id);
+	Integer findSortById (@Param("id") Long id);
 
 	@Select("select * from garbage where name like #{regx}")
 	List<Garbage> findByRegx (@Param("regx") String regx);
+
+	@Select("select * from garbage where id = #{id}")
+	Garbage findById (@Param("id") Long id);
+
+	@Select("SELECT t1.id FROM garbage AS t1 JOIN (SELECT ROUND(RAND() * ((SELECT MAX(id) FROM `garbage`)-(SELECT MIN(id) FROM garbage))+(SELECT MIN(id) FROM garbage)) AS id) AS t2 WHERE t1.id >= t2.id ORDER BY t1.id LIMIT 1")
+	Long findIdByRandom ();
 }

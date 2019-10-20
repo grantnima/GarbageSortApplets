@@ -7,7 +7,7 @@ public class Garbage
 	/**
 	 * 主键
 	 */
-	private String id;
+	private Long id;
 
 	/**
 	 * 垃圾名
@@ -25,12 +25,12 @@ public class Garbage
 	@JSONField(name = "capital_letter")
 	private String capitalLetter;
 
-	public String getId()
+	public Long getId()
 	{
 		return id;
 	}
 
-	public void setId(String id)
+	public void setId(Long id)
 	{
 		this.id = id;
 	}

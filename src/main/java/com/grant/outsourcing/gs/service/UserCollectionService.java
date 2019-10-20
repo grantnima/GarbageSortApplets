@@ -24,7 +24,7 @@ public class UserCollectionService
 		userCollectionMapper.deleteById(id);
 	}
 
-	public UserCollection findByUserIdAndGarbageId (String userId, String garbageId){
+	public UserCollection findByUserIdAndGarbageId (String userId, Long garbageId){
 		return userCollectionMapper.findByUserIdAndGarbageId(userId, garbageId);
 	}
 }

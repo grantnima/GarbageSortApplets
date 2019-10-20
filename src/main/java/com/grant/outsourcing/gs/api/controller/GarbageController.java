@@ -44,7 +44,7 @@ public class GarbageController extends BaseApp
 
 	@PostMapping("/collection/operate")
 	public Map<String,Object> addOrCancelCollection (@UserCheck User user,
-	                                                 @RequestParam(name = "garbage_id") String garbageId ) throws BaseException {
+	                                                 @RequestParam(name = "garbage_id") Long garbageId ) throws BaseException {
 		LOGGER.debug("[addOrCancelCollection], user_id: {},garbage_id: {}", user.getId(),garbageId);
 		garbageComponent.addOrCancelCollection(user,garbageId);
 		return buildResponse();
