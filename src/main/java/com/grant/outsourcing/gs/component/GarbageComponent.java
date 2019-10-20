@@ -191,8 +191,11 @@ public class GarbageComponent
 			recordMap.put(userId,regxList);
 		}else {
 			//用户已有搜索记录 加一个
-			regxList.add(regx);
-			recordMap.put(userId,regxList);
+			//不是已有才加入
+			if(!regxList.contains(regx)){
+				regxList.add(regx);
+				recordMap.put(userId,regxList);
+			}
 		}
 	}
 
