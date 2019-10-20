@@ -69,4 +69,12 @@ public class GarbageController extends BaseApp
 		return buildResponse(garbageComponent.getSearchRecord(user));
 	}
 
+	@PostMapping("/submit")
+	public Map<String,Object> submitGarbage (@UserCheck User user,
+	                                         @RequestParam(name = "garbage_name") String garbageName ) throws BaseException {
+		LOGGER.debug("[submitGarbage], user_id: {},garbage_name: {}", user.getId(),garbageName);
+		garbageComponent.submitGarbage(user,garbageName);
+		return buildResponse();
+	}
+
 }

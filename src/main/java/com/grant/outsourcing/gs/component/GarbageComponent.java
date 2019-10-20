@@ -9,9 +9,11 @@ import com.grant.outsourcing.gs.constant.CacheKey;
 import com.grant.outsourcing.gs.constant.Constant;
 import com.grant.outsourcing.gs.constant.ERespCode;
 import com.grant.outsourcing.gs.db.model.Garbage;
+import com.grant.outsourcing.gs.db.model.GarbageSubmit;
 import com.grant.outsourcing.gs.db.model.User;
 import com.grant.outsourcing.gs.db.model.UserCollection;
 import com.grant.outsourcing.gs.service.GarbageService;
+import com.grant.outsourcing.gs.service.GarbageSubmitService;
 import com.grant.outsourcing.gs.service.UserCollectionService;
 import com.grant.outsourcing.gs.utils.ChineseToFirstLetterUtil;
 import com.grant.outsourcing.gs.utils.IdUtil;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Component
@@ -40,6 +43,8 @@ public class GarbageComponent
 	@Autowired private RedissonClient redissonClient;
 
 	@Autowired private IdUtil idUtil;
+
+	@Autowired private GarbageSubmitService garbageSubmitService;
 
 	public void createGarbage (PostGarbageRequest request) throws BaseException {
 		if(Strings.isNullOrEmpty(request.getName())){
@@ -82,7 +87,7 @@ public class GarbageComponent
 			response.add("Excel数据为空");
 			return response;
 		}
-
+		BigDecimal totalCount = new BigDecimal(result.size());
 		int count = 1;
 		for(GarbageImportVo importVo : result){
 			Garbage garbage = garbageService.findByName(importVo.getName());
@@ -110,6 +115,9 @@ public class GarbageComponent
 			}
 			garbage.setCapitalLetter(capitalLetter);
 			garbageService.save(garbage);
+
+			//进度条
+			LOGGER.debug("[导入数据进度]: {}%",new BigDecimal(count).divide(totalCount,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
 			count++;
 		}
 		return response;
@@ -206,5 +214,18 @@ public class GarbageComponent
 	public List<String> getSearchRecord (User user) throws BaseException {
 		RMap<String,List<String>> recordMap = redissonClient.getMap(CacheKey.USER_SEARCH_RECORD);
 		return recordMap.getOrDefault(user.getId(),new ArrayList<>());
+	}
+
+	public void submitGarbage (User user, String garbageName) throws BaseException{
+		GarbageSubmit submit = garbageSubmitService.findByUserIdAndGarbageName(user.getId(),garbageName);
+		if(submit != null){
+			LOGGER.error("用户多次上传不在库垃圾，user_id: {},garbage_name: {}",user.getId(),garbageName);
+			return;
+		}
+		submit = new GarbageSubmit();
+		submit.setId(idUtil.nextId());
+		submit.setGarbageName(garbageName);
+		submit.setUserId(user.getId());
+		garbageSubmitService.save(submit);
 	}
 }
