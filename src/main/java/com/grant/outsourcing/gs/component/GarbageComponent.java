@@ -31,6 +31,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
 
+@SuppressWarnings("Duplicates")
 @Component
 public class GarbageComponent
 {
@@ -123,17 +124,30 @@ public class GarbageComponent
 		return response;
 	}
 
-	public List<Map<String,Object>> getGarbageDictionary (User user,Integer sort) throws BaseException {
-		List<Map<String,Object>> response = new ArrayList<>();
+	public Map<String,List<Map<String,Object>>> getGarbageDictionary (User user,Integer sort) throws BaseException {
+		Map<String,List<Map<String,Object>>> response = new HashMap<>();
 		List<Garbage> garbageList = garbageService.findBySort(sort);
 		if(garbageList != null && garbageList.size() != 0){
 			for(Garbage garbage : garbageList){
-				Map<String,Object> responseItem = new HashMap<>();
-				responseItem.put("id",garbage.getId());
-				responseItem.put("name",garbage.getName());
-				responseItem.put("capital_letter",garbage.getCapitalLetter());
-				responseItem.put("collected",userCollectionService.findByUserIdAndGarbageId(user.getId(),garbage.getId()) != null);
-				response.add(responseItem);
+				if(response.containsKey(garbage.getCapitalLetter())){
+					List<Map<String,Object>> capitalList = response.get(garbage.getCapitalLetter());
+					Map<String,Object> responseItem = new HashMap<>();
+					responseItem.put("id",garbage.getId());
+					responseItem.put("name",garbage.getName());
+					responseItem.put("capital_letter",garbage.getCapitalLetter());
+					responseItem.put("collected",userCollectionService.findByUserIdAndGarbageId(user.getId(),garbage.getId()) != null);
+					capitalList.add(responseItem);
+					response.put(garbage.getCapitalLetter(),capitalList);
+				}else {
+					List<Map<String,Object>> capitalList = new ArrayList<>();
+					Map<String,Object> responseItem = new HashMap<>();
+					responseItem.put("id",garbage.getId());
+					responseItem.put("name",garbage.getName());
+					responseItem.put("capital_letter",garbage.getCapitalLetter());
+					responseItem.put("collected",userCollectionService.findByUserIdAndGarbageId(user.getId(),garbage.getId()) != null);
+					capitalList.add(responseItem);
+					response.put(garbage.getCapitalLetter(),capitalList);
+				}
 			}
 		}
 		return response;
