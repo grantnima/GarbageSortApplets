@@ -157,14 +157,7 @@ public class GarbageComponent
 		if (pageNo < 1) {
 			throw new BaseException(ERespCode.TYPE_MISMATCH_EXCEPTION, "pageNo参数错误");
 		}
-		PageHelper.startPage(pageNo,pageSize);
-		List<Map<String,Object>> garbageList = garbageService.findBySort(sort);
-		if (garbageList != null && garbageList.size() != 0){
-			for(Map<String,Object> garbage : garbageList){
-				garbage.put("collected",userCollectionService.findByUserIdAndGarbageId(user.getId(),Long.valueOf(garbage.get("id").toString())) != null);
-			}
-		}
-		return new PageResponse<>(garbageList);
+		return garbageService.findBySort(user.getId(),sort,pageNo,pageSize);
 	}
 
 	public void addOrCancelCollection (User user, Long garbageId ) throws BaseException {

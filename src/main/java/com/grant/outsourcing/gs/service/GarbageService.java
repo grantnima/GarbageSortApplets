@@ -1,7 +1,9 @@
 package com.grant.outsourcing.gs.service;
 
+import com.github.pagehelper.PageHelper;
 import com.grant.outsourcing.gs.db.mapper.GarbageMapper;
 import com.grant.outsourcing.gs.db.model.Garbage;
+import com.grant.outsourcing.gs.utils.PageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ public class GarbageService
 {
 	@Resource private GarbageMapper garbageMapper;
 
+	@Resource private UserCollectionService userCollectionService;
+
 	public void save (Garbage garbage){
 		garbageMapper.save(garbage);
 	}
@@ -24,8 +28,15 @@ public class GarbageService
 		return garbageMapper.findByName(name);
 	}
 
-	public List<Map<String,Object>> findBySort (Integer sort) {
-		return garbageMapper.findBySort(sort);
+	public PageResponse findBySort (String userId,Integer sort, Integer pageNo, Integer pageSize) {
+		PageHelper.startPage(pageNo,pageSize);
+		List<Map<String,Object>> garbageList = garbageMapper.findBySort(sort);
+		if (garbageList != null && garbageList.size() != 0){
+			for(Map<String,Object> garbage : garbageList){
+				garbage.put("collected",userCollectionService.findByUserIdAndGarbageId(userId,Long.valueOf(garbage.get("id").toString())) != null);
+			}
+		}
+		return new PageResponse<>(garbageList);
 	}
 
 	public String findNameById (Long id) {
