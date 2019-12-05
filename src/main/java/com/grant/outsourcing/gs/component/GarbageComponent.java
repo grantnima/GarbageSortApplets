@@ -2,9 +2,11 @@ package com.grant.outsourcing.gs.component;
 
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
+import com.github.pagehelper.PageHelper;
 import com.google.common.base.Strings;
 import com.grant.outsourcing.gs.api.exception.BaseException;
 import com.grant.outsourcing.gs.api.request.PostGarbageRequest;
+import com.grant.outsourcing.gs.api.response.PaginationResponse;
 import com.grant.outsourcing.gs.constant.CacheKey;
 import com.grant.outsourcing.gs.constant.Constant;
 import com.grant.outsourcing.gs.constant.ERespCode;
@@ -17,6 +19,7 @@ import com.grant.outsourcing.gs.service.GarbageSubmitService;
 import com.grant.outsourcing.gs.service.UserCollectionService;
 import com.grant.outsourcing.gs.utils.ChineseToFirstLetterUtil;
 import com.grant.outsourcing.gs.utils.IdUtil;
+import com.grant.outsourcing.gs.utils.PageResponse;
 import com.grant.outsourcing.gs.utils.StringUtils;
 import com.grant.outsourcing.gs.vo.GarbageImportVo;
 import org.redisson.api.RMap;
@@ -124,33 +127,44 @@ public class GarbageComponent
 		return response;
 	}
 
-	public Map<String,List<Map<String,Object>>> getGarbageDictionary (User user,Integer sort) throws BaseException {
-		Map<String,List<Map<String,Object>>> response = new HashMap<>();
-		List<Garbage> garbageList = garbageService.findBySort(sort);
-		if(garbageList != null && garbageList.size() != 0){
-			for(Garbage garbage : garbageList){
-				if(response.containsKey(garbage.getCapitalLetter())){
-					List<Map<String,Object>> capitalList = response.get(garbage.getCapitalLetter());
-					Map<String,Object> responseItem = new HashMap<>();
-					responseItem.put("id",garbage.getId());
-					responseItem.put("name",garbage.getName());
-					responseItem.put("capital_letter",garbage.getCapitalLetter());
-					responseItem.put("collected",userCollectionService.findByUserIdAndGarbageId(user.getId(),garbage.getId()) != null);
-					capitalList.add(responseItem);
-					response.put(garbage.getCapitalLetter(),capitalList);
-				}else {
-					List<Map<String,Object>> capitalList = new ArrayList<>();
-					Map<String,Object> responseItem = new HashMap<>();
-					responseItem.put("id",garbage.getId());
-					responseItem.put("name",garbage.getName());
-					responseItem.put("capital_letter",garbage.getCapitalLetter());
-					responseItem.put("collected",userCollectionService.findByUserIdAndGarbageId(user.getId(),garbage.getId()) != null);
-					capitalList.add(responseItem);
-					response.put(garbage.getCapitalLetter(),capitalList);
-				}
+	public PageResponse getGarbageDictionary (User user, Integer sort, Integer pageNo, Integer pageSize) throws BaseException {
+//		Map<String,List<Map<String,Object>>> response = new HashMap<>();
+//		List<Garbage> garbageList = garbageService.findBySort(sort);
+//		if(garbageList != null && garbageList.size() != 0){
+//			for(Garbage garbage : garbageList){
+//				if(response.containsKey(garbage.getCapitalLetter())){
+//					List<Map<String,Object>> capitalList = response.get(garbage.getCapitalLetter());
+//					Map<String,Object> responseItem = new HashMap<>();
+//					responseItem.put("id",garbage.getId());
+//					responseItem.put("name",garbage.getName());
+//					responseItem.put("capital_letter",garbage.getCapitalLetter());
+//					responseItem.put("collected",userCollectionService.findByUserIdAndGarbageId(user.getId(),garbage.getId()) != null);
+//					capitalList.add(responseItem);
+//					response.put(garbage.getCapitalLetter(),capitalList);
+//				}else {
+//					List<Map<String,Object>> capitalList = new ArrayList<>();
+//					Map<String,Object> responseItem = new HashMap<>();
+//					responseItem.put("id",garbage.getId());
+//					responseItem.put("name",garbage.getName());
+//					responseItem.put("capital_letter",garbage.getCapitalLetter());
+//					responseItem.put("collected",userCollectionService.findByUserIdAndGarbageId(user.getId(),garbage.getId()) != null);
+//					capitalList.add(responseItem);
+//					response.put(garbage.getCapitalLetter(),capitalList);
+//				}
+//			}
+//		}
+//		return response;
+		if (pageNo < 1) {
+			throw new BaseException(ERespCode.TYPE_MISMATCH_EXCEPTION, "pageNo参数错误");
+		}
+		PageHelper.startPage(pageNo,pageSize);
+		List<Map<String,Object>> garbageList = garbageService.findBySort(sort);
+		if (garbageList != null && garbageList.size() != 0){
+			for(Map<String,Object> garbage : garbageList){
+				garbage.put("collected",userCollectionService.findByUserIdAndGarbageId(user.getId(),Long.valueOf(garbage.get("id").toString())) != null);
 			}
 		}
-		return response;
+		return new PageResponse<>(garbageList);
 	}
 
 	public void addOrCancelCollection (User user, Long garbageId ) throws BaseException {

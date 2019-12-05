@@ -37,9 +37,11 @@ public class GarbageController extends BaseApp
 
 	@GetMapping("/dictionary")
 	public Map<String,Object> getGarbageDictionary (@UserCheck User user,
-	                                                @RequestParam(name = "sort") Integer sort) throws BaseException {
+	                                                @RequestParam(name = "sort") Integer sort,
+													@RequestParam(name = "pageNo") Integer pageNo,
+													@RequestParam(name = "pageSize") Integer pageSize) throws BaseException {
 		LOGGER.debug("[getGarbageDictionary], user_id: {},sort: {}",user.getId(), sort);
-		return buildResponse(garbageComponent.getGarbageDictionary(user,sort));
+		return buildResponse(garbageComponent.getGarbageDictionary(user,sort,pageNo,pageSize));
 	}
 
 	@PostMapping("/collection/operate")

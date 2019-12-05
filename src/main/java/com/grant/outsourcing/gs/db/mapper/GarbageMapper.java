@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 public interface GarbageMapper extends GeneralDao<Garbage>
 {
@@ -13,7 +14,7 @@ public interface GarbageMapper extends GeneralDao<Garbage>
 	Garbage findByName (@Param("name") String name);
 
 	@Select("select * from garbage where sort = #{sort} order by capital_letter asc")
-	List<Garbage> findBySort (@Param("sort") Integer sort);
+	List<Map<String,Object>> findBySort (@Param("sort") Integer sort);
 
 	@Select("select name from garbage where id = #{id}")
 	String findNameById (@Param("id") Long id);

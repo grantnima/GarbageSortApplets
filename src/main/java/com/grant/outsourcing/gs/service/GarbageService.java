@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class GarbageService
@@ -23,7 +24,7 @@ public class GarbageService
 		return garbageMapper.findByName(name);
 	}
 
-	public List<Garbage> findBySort (Integer sort) {
+	public List<Map<String,Object>> findBySort (Integer sort) {
 		return garbageMapper.findBySort(sort);
 	}
 
