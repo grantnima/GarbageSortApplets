@@ -1,8 +1,8 @@
 package com.grant.outsourcing.gs.db.mapper;
 
 import com.grant.outsourcing.gs.db.model.Garbage;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public interface GarbageMapper extends GeneralDao<Garbage>
 	Garbage findByName (@Param("name") String name);
 
 	@Select("select * from garbage where sort = #{sort} order by capital_letter asc")
-	List<Map<String,Object>> findBySort (@Param("sort") Integer sort);
+	List<Garbage> findBySort (@Param("sort") Integer sort);
 
 	@Select("select name from garbage where id = #{id}")
 	String findNameById (@Param("id") Long id);

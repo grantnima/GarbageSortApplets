@@ -1,6 +1,7 @@
 package com.grant.outsourcing.gs.db.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.grant.outsourcing.gs.annotation.DataBaseIgnore;
 
 public class Garbage
 {
@@ -24,6 +25,17 @@ public class Garbage
 	 */
 	@JSONField(name = "capital_letter")
 	private String capitalLetter;
+
+	@DataBaseIgnore
+	private Boolean collected;
+
+	public Boolean getCollected() {
+		return collected;
+	}
+
+	public void setCollected(Boolean collected) {
+		this.collected = collected;
+	}
 
 	public Long getId()
 	{

@@ -40,7 +40,7 @@ public class GarbageController extends BaseApp
 	                                                @RequestParam(name = "sort") Integer sort,
 													@RequestParam(name = "pageNo") Integer pageNo,
 													@RequestParam(name = "pageSize") Integer pageSize) throws BaseException {
-		LOGGER.debug("[getGarbageDictionary], user_id: {},sort: {}",user.getId(), sort);
+		LOGGER.debug("[getGarbageDictionary], user_id: {},sort: {},pageNo: {},pageSize: {}",user.getId(), sort,pageNo,pageSize);
 		return buildResponse(garbageComponent.getGarbageDictionary(user,sort,pageNo,pageSize));
 	}
 

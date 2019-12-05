@@ -30,10 +30,10 @@ public class GarbageService
 
 	public PageResponse findBySort (String userId,Integer sort, Integer pageNo, Integer pageSize) {
 		PageHelper.startPage(pageNo,pageSize);
-		List<Map<String,Object>> garbageList = garbageMapper.findBySort(sort);
+		List<Garbage> garbageList = garbageMapper.findBySort(sort);
 		if (garbageList != null && garbageList.size() != 0){
-			for(Map<String,Object> garbage : garbageList){
-				garbage.put("collected",userCollectionService.findByUserIdAndGarbageId(userId,Long.valueOf(garbage.get("id").toString())) != null);
+			for(Garbage garbage : garbageList){
+				garbage.setCollected(userCollectionService.findByUserIdAndGarbageId(userId,garbage.getId()) != null);
 			}
 		}
 		return new PageResponse<>(garbageList);

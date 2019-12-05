@@ -1,6 +1,7 @@
 package com.grant.outsourcing.gs.db.provider;
 
 import com.google.common.base.CaseFormat;
+import com.grant.outsourcing.gs.annotation.DataBaseIgnore;
 import com.grant.outsourcing.gs.utils.DateUtils;
 
 import java.beans.BeanInfo;
@@ -146,6 +147,15 @@ public class GeneralProvider
 			Method getter = pd.getReadMethod();
 			Object value = getter.invoke(bean);
 			fieldMap.put(key, value);
+		}
+		//检测忽视注解
+		Class clz =bean.getClass();
+		Field[] fields = clz.getDeclaredFields();
+		for(Field field : fields) {
+			boolean fieldHasAnno = field.isAnnotationPresent(DataBaseIgnore.class);
+			if (fieldHasAnno) {
+				fieldMap.remove(field.getName());
+			}
 		}
 		return fieldMap;
 	}
