@@ -29,7 +29,7 @@ public class GarbageService
 	}
 
 	public PageResponse findBySort (String userId,Integer sort, Integer pageNo, Integer pageSize) {
-		PageHelper.startPage(pageNo,pageSize);
+		PageHelper.startPage(pageNo,pageSize," order by capital_letter asc");
 		List<Garbage> garbageList = garbageMapper.findBySort(sort);
 		if (garbageList != null && garbageList.size() != 0){
 			for(Garbage garbage : garbageList){

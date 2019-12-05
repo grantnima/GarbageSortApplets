@@ -13,7 +13,7 @@ public interface GarbageMapper extends GeneralDao<Garbage>
 	@Select("select * from garbage where name = #{name}")
 	Garbage findByName (@Param("name") String name);
 
-	@Select("select * from garbage where sort = #{sort} order by capital_letter asc")
+	@Select("select * from garbage where sort = #{sort}")
 	List<Garbage> findBySort (@Param("sort") Integer sort);
 
 	@Select("select name from garbage where id = #{id}")
