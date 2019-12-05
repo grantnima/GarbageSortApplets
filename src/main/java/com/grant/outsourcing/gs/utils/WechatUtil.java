@@ -13,15 +13,15 @@ import java.util.UUID;
 public class WechatUtil
 {
 	@Value("${wechat.app.id}")
-	private String APP_ID;
+	private static String APP_ID;
 	@Value("${wechat.app.secret}")
-	private String APP_SECRET;
+	private static String APP_SECRET;
 
 	public static JSONObject code2Session (String code) throws BaseException{
 		String url = "https://api.weixin.qq.com/sns/jscode2session?"
 				+ "appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code";
-		url= url.replace("APPID", "wx52eafb1d66f08849");
-		url = url.replace("SECRET", "f377ef2c7a74964ed7b4e8a1bc6bee78");
+		url= url.replace("APPID", APP_ID);
+		url = url.replace("SECRET", APP_SECRET);
 		url = url.replace("JSCODE", code);
 
 		try {

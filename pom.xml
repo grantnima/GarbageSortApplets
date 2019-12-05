@@ -34,8 +34,8 @@
                 <mysql.database>garbage_sort</mysql.database>
                 <mysql.user>garbageSort</mysql.user>
                 <mysql.password>9SmysqlPsw@</mysql.password>
-                <wechat.app.id>test</wechat.app.id>
-                <wechat.app.secret>test</wechat.app.secret>
+                <wechat.app.id>wxf874fc14530cb965</wechat.app.id>
+                <wechat.app.secret>b394a13977a28bc1eb0459f1e9c430ee</wechat.app.secret>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -54,8 +54,8 @@
                 <mysql.database>garbage_sort</mysql.database>
                 <mysql.user>garbageSort</mysql.user>
                 <mysql.password>9SmysqlPsw@</mysql.password>
-                <wechat.app.id>test</wechat.app.id>
-                <wechat.app.secret>test</wechat.app.secret>
+                <wechat.app.id>wxf874fc14530cb965</wechat.app.id>
+                <wechat.app.secret>b394a13977a28bc1eb0459f1e9c430ee</wechat.app.secret>
             </properties>
         </profile>
 
@@ -73,8 +73,8 @@
                 <mysql.database>garbage_sort</mysql.database>
                 <mysql.user>garbageSort</mysql.user>
                 <mysql.password>9SmysqlPsw@</mysql.password>
-                <wechat.app.id>test</wechat.app.id>
-                <wechat.app.secret>test</wechat.app.secret>
+                <wechat.app.id>wxf874fc14530cb965</wechat.app.id>
+                <wechat.app.secret>b394a13977a28bc1eb0459f1e9c430ee</wechat.app.secret>
             </properties>
         </profile>
 
@@ -159,6 +159,13 @@
             <groupId>cn.afterturn</groupId>
             <artifactId>easypoi-annotation</artifactId>
             <version>3.3.0</version>
+        </dependency>
+
+        <!--OSS-->
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>3.8.0</version>
         </dependency>
     </dependencies>
 
