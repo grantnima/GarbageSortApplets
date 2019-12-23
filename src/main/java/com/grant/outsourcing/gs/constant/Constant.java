@@ -9,9 +9,9 @@ public interface Constant
 		int Others = 4;
 	}
 
-	String OSS_ENDPOINT = "";
-	String OSS_ACCESSKEY_ID = "";
-	String OSS_ACCESSKEY_SECRET = "";
+	String OSS_ENDPOINT = "oss-cn-shenzhen.aliyuncs.com";
+	String OSS_ACCESSKEY_ID = "LTAI4FgmBGcAdgVjL8Gn2Rw9";
+	String OSS_ACCESSKEY_SECRET = "wwi6ePETPvo0kaUnLH84TyQsk12RW7";
 	String OSS_BUCKET_NAME = "yanluo-garbage-sort-b1";
 	String OSS_BUCKET_DOMAIN = "yanluo-garbage-sort-b1.oss-cn-shenzhen.aliyuncs.com";
 }
