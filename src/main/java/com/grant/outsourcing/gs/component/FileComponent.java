@@ -6,6 +6,7 @@ import com.grant.outsourcing.gs.db.model.File;
 import com.grant.outsourcing.gs.service.FileService;
 import com.grant.outsourcing.gs.utils.IdUtil;
 import com.grant.outsourcing.gs.utils.OSSUtils;
+import com.grant.outsourcing.gs.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,15 +21,12 @@ public class FileComponent {
     @Autowired
     private FileService fileService;
 
-    @Autowired
-    private IdUtil idUtil;
-
     public Map<String,Object> uploadFile (MultipartFile multipartFile) throws BaseException {
         if (multipartFile == null){
             throw new BaseException(ERespCode.RESOURCE_NOT_FOUND,"接受不到文件");
         }
         File file = new File();
-        file.setId(idUtil.nextId());
+        file.setId(StringUtils.getSimpleUUID());
         file.setCreateTime(System.currentTimeMillis());
         file.setFileName(multipartFile.getOriginalFilename());
         //生成url
@@ -48,7 +46,7 @@ public class FileComponent {
         return response;
     }
 
-    public Map<String,Object> getFileDownloadUrl (Long fileId) throws BaseException {
+    public Map<String,Object> getFileDownloadUrl (String fileId) throws BaseException {
         Map<String,Object> response = new HashMap<>();
 
         File file = fileService.findOne(fileId);

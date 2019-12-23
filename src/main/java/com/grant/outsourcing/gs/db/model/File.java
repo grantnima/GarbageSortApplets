@@ -7,7 +7,7 @@ public class File {
     /**
      * 主键
      */
-    private Long id;
+    private String id;
 
     /**
      * 文件名
@@ -27,11 +27,11 @@ public class File {
     @JSONField(name = "create_time")
     private Long createTime;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

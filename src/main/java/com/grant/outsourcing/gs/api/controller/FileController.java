@@ -25,7 +25,7 @@ public class FileController extends BaseApp {
     }
 
     @GetMapping("/download/url")
-    public Map<String,Object> getFileDownloadUrl (@RequestParam(value = "file_id") Long fileId) throws BaseException {
+    public Map<String,Object> getFileDownloadUrl (@RequestParam(value = "file_id") String fileId) throws BaseException {
         LOGGER.debug("[getFileDownloadUrl],file_id: {}",fileId);
         return buildResponse(fileComponent.getFileDownloadUrl(fileId));
     }

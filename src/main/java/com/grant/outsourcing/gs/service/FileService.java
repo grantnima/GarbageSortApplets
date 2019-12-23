@@ -16,7 +16,7 @@ public class FileService {
         fileMapper.save(file);
     }
 
-    public File findOne (Long id){
+    public File findOne (String id){
         return fileMapper.findOneById(id);
     }
 }
