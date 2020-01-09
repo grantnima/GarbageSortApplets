@@ -1,6 +1,8 @@
 package com.grant.outsourcing.gs.db.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.grant.outsourcing.gs.annotation.DataBaseIgnore;
 
 public class Garbage
@@ -8,6 +10,7 @@ public class Garbage
 	/**
 	 * 主键
 	 */
+	@JsonSerialize(using = ToStringSerializer.class)
 	private Long id;
 
 	/**
