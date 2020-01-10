@@ -204,7 +204,7 @@ public class GarbageComponent
 		}
 		for(Garbage garbage : garbageList){
 			Map<String,Object> responseItem = new HashMap<>();
-			responseItem.put("garbage_id",garbage.getId());
+			responseItem.put("garbage_id",garbage.getId().toString());
 			responseItem.put("garbage_name",garbage.getName());
 			responseItem.put("garbage_sort",garbage.getSort());
 			responseItem.put("collected",userCollectionService.findByUserIdAndGarbageId(user.getId(),garbage.getId()) != null);
