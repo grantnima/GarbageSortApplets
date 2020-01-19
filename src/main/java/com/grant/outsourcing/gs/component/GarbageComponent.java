@@ -94,17 +94,21 @@ public class GarbageComponent
 		BigDecimal totalCount = new BigDecimal(result.size());
 		int count = 1;
 		for(GarbageImportVo importVo : result){
-			Garbage garbage = garbageService.findByName(importVo.getName());
-			if(garbage != null){
-				response.add("第" + count + "行数据，垃圾名已存在");
-				count++;
-				continue;
-			}
 			if (importVo.getSortType() == null) {
 				response.add("第" + count + "行数据，垃圾类型名不正确");
 				count++;
 				continue;
 			}
+
+			Garbage garbage = garbageService.findByName(importVo.getName());
+			if(garbage != null){
+				garbage.setSort(importVo.getSortType());
+				garbageService.update(garbage);
+				response.add("第" + count + "行数据，垃圾名已存在，已更新垃圾类型");
+				count++;
+				continue;
+			}
+
 			garbage = new Garbage();
 			garbage.setId(idUtil.nextId());
 			garbage.setSort(importVo.getSortType());
@@ -119,7 +123,7 @@ public class GarbageComponent
 			}
 			garbage.setCapitalLetter(capitalLetter);
 			garbageService.save(garbage);
-
+			LOGGER.info("新垃圾: {},类型: {}",garbage.getName(),garbage.getSort());
 			//进度条
 			LOGGER.debug("[导入数据进度]: {}%",new BigDecimal(count).divide(totalCount,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
 			count++;
@@ -248,5 +252,10 @@ public class GarbageComponent
 		submit.setGarbageName(garbageName);
 		submit.setUserId(user.getId());
 		garbageSubmitService.save(submit);
+	}
+
+	public void cleanSearchRecord (String userId) throws BaseException{
+		RMap<String,List<String>> recordMap = redissonClient.getMap(CacheKey.USER_SEARCH_RECORD);
+		recordMap.remove(userId);
 	}
 }

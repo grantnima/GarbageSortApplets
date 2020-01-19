@@ -7,6 +7,7 @@ public interface Constant
 		int Kitchen = 2;
 		int Harmful = 3;
 		int Others = 4;
+		int NormalLiquid = 5;
 	}
 
 	String OSS_ENDPOINT = "oss-cn-shenzhen.aliyuncs.com";

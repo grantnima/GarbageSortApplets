@@ -79,4 +79,11 @@ public class GarbageController extends BaseApp
 		return buildResponse();
 	}
 
+	@DeleteMapping("/search/record")
+	public Map<String,Object> cleanSearchRecord (@UserCheck User user ) throws BaseException {
+		LOGGER.debug("[cleanSearchRecord], user_id: {}", user.getId());
+		garbageComponent.cleanSearchRecord(user.getId());
+		return buildResponse();
+	}
+
 }
