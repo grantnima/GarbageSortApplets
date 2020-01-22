@@ -32,6 +32,17 @@ public class Garbage
 	@DataBaseIgnore
 	private Boolean collected;
 
+	@DataBaseIgnore
+	private float matchScore;
+
+	public float getMatchScore() {
+		return matchScore;
+	}
+
+	public void setMatchScore(float matchScore) {
+		this.matchScore = matchScore;
+	}
+
 	public Boolean getCollected() {
 		return collected;
 	}

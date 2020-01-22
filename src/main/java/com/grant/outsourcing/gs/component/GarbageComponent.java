@@ -17,10 +17,7 @@ import com.grant.outsourcing.gs.db.model.UserCollection;
 import com.grant.outsourcing.gs.service.GarbageService;
 import com.grant.outsourcing.gs.service.GarbageSubmitService;
 import com.grant.outsourcing.gs.service.UserCollectionService;
-import com.grant.outsourcing.gs.utils.ChineseToFirstLetterUtil;
-import com.grant.outsourcing.gs.utils.IdUtil;
-import com.grant.outsourcing.gs.utils.PageResponse;
-import com.grant.outsourcing.gs.utils.StringUtils;
+import com.grant.outsourcing.gs.utils.*;
 import com.grant.outsourcing.gs.vo.GarbageImportVo;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
@@ -206,6 +203,21 @@ public class GarbageComponent
 		if(garbageList == null || garbageList.size() == 0){
 			return response;
 		}
+		for(Garbage garbage : garbageList){
+			garbage.setMatchScore(SimilarityUtils.levenshtein(regx,garbage.getName()));
+		}
+		garbageList.sort(new Comparator<Garbage>() {
+			@Override
+			public int compare(Garbage o1, Garbage o2) {
+				if(o1.getMatchScore() > o2.getMatchScore()){
+					return -1;
+				}
+				if(o1.getMatchScore() < o2.getMatchScore()){
+					return 1;
+				}
+				return 0;
+			}
+		});
 		for(Garbage garbage : garbageList){
 			Map<String,Object> responseItem = new HashMap<>();
 			responseItem.put("garbage_id",garbage.getId().toString());
