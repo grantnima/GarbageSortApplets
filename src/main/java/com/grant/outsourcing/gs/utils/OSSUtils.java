@@ -6,10 +6,12 @@ import com.grant.outsourcing.gs.api.exception.BaseException;
 import com.grant.outsourcing.gs.constant.Constant;
 import com.grant.outsourcing.gs.db.mapper.SystemSettingMapper;
 import com.grant.outsourcing.gs.service.SystemSettingService;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.InputStream;
 
+@Component
 public class OSSUtils {
 
     @Resource
