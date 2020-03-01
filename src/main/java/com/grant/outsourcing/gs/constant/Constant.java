@@ -1,5 +1,7 @@
 package com.grant.outsourcing.gs.constant;
 
+import com.grant.outsourcing.gs.db.mapper.SystemSettingMapper;
+
 public interface Constant
 {
 	interface GarbageSort {

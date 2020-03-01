@@ -7,4 +7,6 @@ public interface CacheKey
 	String USER_SEARCH_RECORD = "com.grant.outsourcing.gs::user_search_record";
 
 	String USER_EXAM_RECORD = "com.grant.outsourcing.gs::user_exam_record";
+
+	String SYSTEM_SETTING = "com.grant.outsourcing.gs::system_setting";
 }
