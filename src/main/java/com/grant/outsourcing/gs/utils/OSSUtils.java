@@ -11,16 +11,15 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.io.InputStream;
 
-@Component
 public class OSSUtils {
 
     @Resource
     private static SystemSettingService systemSettingService;
 
     // 生成OSSClient
-//    private static OSS ossClient = new OSSClientBuilder().build(Constant.OSS_ENDPOINT, Constant.OSS_ACCESSKEY_ID, Constant.OSS_ACCESSKEY_SECRET);
+    private static OSS ossClient = new OSSClientBuilder().build(Constant.OSS_ENDPOINT, Constant.OSS_ACCESSKEY_ID, Constant.OSS_ACCESSKEY_SECRET);
 
-    private static OSS ossClient = new OSSClientBuilder().build(systemSettingService.getValueByKey("OSS_ENDPOINT"), systemSettingService.getValueByKey("OSS_ACCESSKEY_ID"), systemSettingService.getValueByKey("OSS_ACCESSKEY_SECRET"));
+//    private static OSS ossClient = new OSSClientBuilder().build(systemSettingService.getValueByKey("OSS_ENDPOINT"), systemSettingService.getValueByKey("OSS_ACCESSKEY_ID"), systemSettingService.getValueByKey("OSS_ACCESSKEY_SECRET"));
 
     private static OSS getOssClient(){
         return ossClient;
@@ -33,8 +32,8 @@ public class OSSUtils {
      * @throws BaseException
      */
     public static void uploadFile (InputStream inputStream, String fileKey) throws BaseException {
-//        getOssClient().putObject(Constant.OSS_BUCKET_NAME, fileKey, inputStream);
-        getOssClient().putObject(systemSettingService.getValueByKey("OSS_BUCKET_NAME"), fileKey, inputStream);
+        getOssClient().putObject(Constant.OSS_BUCKET_NAME, fileKey, inputStream);
+//        getOssClient().putObject(systemSettingService.getValueByKey("OSS_BUCKET_NAME"), fileKey, inputStream);
     }
 
     /**
@@ -44,8 +43,8 @@ public class OSSUtils {
      * @throws BaseException
      */
     public static String getFileDownloadLink (String url) throws BaseException {
-//        return Constant.OSS_BUCKET_DOMAIN + "/" + url;
-        return systemSettingService.getValueByKey("OSS_BUCKET_DOMAIN") + "/" + url;
+        return Constant.OSS_BUCKET_DOMAIN + "/" + url;
+//        return systemSettingService.getValueByKey("OSS_BUCKET_DOMAIN") + "/" + url;
     }
 
 }
