@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface RewardedDetailMapper extends GeneralDao<RewardedDetail> {
 
-    @Select("select * from reward_detail where user_id = #{userId}")
+    @Select("select * from rewarded_detail where user_id = #{userId}")
     RewardedDetail findOneByUserId (@Param("userId") String userId);
 
-    @Select("select * from reward_detail")
+    @Select("select * from rewarded_detail")
     List<RewardedDetail> findAll ();
 }
