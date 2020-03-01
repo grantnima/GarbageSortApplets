@@ -152,10 +152,12 @@ public class UserComponent
 			writer.addHeaderAlias("count", "打赏次数");
 			writer.addHeaderAlias("firstRewardTime", "首次打赏时间");
 			writer.addHeaderAlias("lastRewardTime", "最近打赏时间");
+			writer.setColumnWidth(0,50);
 			writer.setColumnWidth(1,50);
 			writer.setColumnWidth(2,50);
-			writer.setColumnWidth(5,25);
-			writer.setColumnWidth(6,25);
+			writer.setColumnWidth(3,50);
+			writer.setColumnWidth(5,50);
+			writer.setColumnWidth(6,50);
 			// 一次性写出内容，使用默认样式，强制输出标题
 			writer.write(exportList, true);
 			//out为OutputStream，需要写出到的目标流
