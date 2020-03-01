@@ -9,11 +9,9 @@ import com.grant.outsourcing.gs.db.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @RestController
@@ -42,6 +40,28 @@ public class UserController extends BaseApp
 			throw new BaseException(ERespCode.INTERNAL_ERROR);
 		}
 		return buildResponse(code);
+	}
+
+	@PostMapping("/reward/detail")
+	public Map<String,Object> submitDetail (@UserCheck User user,@RequestParam(name = "name") String name,
+											@RequestParam(name = "phone") String phone,
+											@RequestParam(name = "address") String address,
+											@RequestParam(name = "email") String email) throws BaseException {
+		LOGGER.debug("[submitDetail],user_id: {},name: {},phone: {},address: {},email: {}",user.getId(),name,phone,address,email);
+		userComponent.submitDetail(user, name, phone, address, email);
+		return buildResponse();
+	}
+
+	@GetMapping("/reward/check")
+	public Map<String,Object> checkRewarded (@UserCheck User user) throws BaseException {
+		LOGGER.debug("[checkRewarded],user_id: {}",user.getId());
+		return buildResponse(userComponent.checkRewarded(user));
+	}
+
+	@GetMapping("/reward/export")
+	public void exportRewardDetail (HttpServletResponse response) throws BaseException {
+		LOGGER.debug("[exportRewardDetail]");
+		userComponent.exportRewardDetail(response);
 	}
 
 }

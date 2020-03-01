@@ -175,6 +175,13 @@
             <version>1.2.12</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-poi -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-poi</artifactId>
+            <version>5.1.5</version>
+        </dependency>
+
     </dependencies>
 
     <build>
