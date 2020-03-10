@@ -30,4 +30,10 @@ public interface GarbageMapper extends GeneralDao<Garbage>
 
 	@Select("SELECT t1.id FROM garbage AS t1 JOIN (SELECT ROUND(RAND() * ((SELECT MAX(id) FROM `garbage`)-(SELECT MIN(id) FROM garbage))+(SELECT MIN(id) FROM garbage)) AS id) AS t2 WHERE t1.id >= t2.id ORDER BY t1.id LIMIT 1")
 	Long findIdByRandom ();
+
+	@Select("select id from garbage")
+	List<Long> findAll ();
+
+	@Select("select count(*) from garbage")
+	Integer countAll ();
 }
